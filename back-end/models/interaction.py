@@ -24,3 +24,35 @@ class Interaction:
         
         # Auto-generated fields
         self.created_at = datetime.now()
+            def to_dict(self):
+        data = {
+            'user_id': self.user_id,
+            'event_type': self.event_type,
+            'timestamp': self.timestamp,
+            'created_at': self.created_at
+        }
+        
+        optional_fields = [
+            'session_id', 'element', 'page_url', 'target', 'value',
+            'x', 'y', 'scroll_depth', 'duration', 'metadata'
+        ]
+        
+        for field in optional_fields:
+            value = getattr(self, field, None)
+            if value is not None:
+                data[field] = value
+        
+        return data
+    
+    @staticmethod
+    def from_dict(data):
+        interaction = Interaction(
+            user_id=data['user_id'],
+            event_type=data['event_type'],
+            timestamp=data.get('timestamp'),
+            **{k: v for k, v in data.items() if k not in ['user_id', 'event_type', 'timestamp', 'created_at']}
+        )
+        if 'created_at' in data:
+            interaction.created_at = data['created_at']
+        
+        return interaction
