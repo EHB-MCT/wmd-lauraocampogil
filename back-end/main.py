@@ -17,9 +17,41 @@ CORS(app, resources={
 
 init_db(app)
 
-@app.route('/')
-def home():
-    return "Hello, World!"
+@app.route('/', methods=['GET'])
+def root():
+    return jsonify({
+        'name': 'Women\'s Football Analytics API',
+        'version': '1.0.0',
+        'status': 'running',
+        'endpoints': {
+            'health': '/health',
+            'tracking': '/api/tracking',
+            'analytics': '/api/analytics',
+            'admin': '/api/admin'
+        }
+    }), 200
+
+app.register_blueprint(tracking_bp, url_prefix='/api/tracking')
+app.register_blueprint(analytics_bp, url_prefix='/api/analytics')
+app.register_blueprint(admin_bp, url_prefix='/api/admin')
+
+
+
+@app.errorhandler(404)
+def not_found(error):
+    return jsonify({
+        'error': 'Not Found',
+        'message': 'The requested resource was not found'
+    }), 404
+
+
+@app.errorhandler(500)
+def internal_error(error):
+    return jsonify({
+        'error': 'Internal Server Error',
+        'message': 'An internal error occurred'
+    }), 500
+
 
 if __name__ == '__main__':
     port = int(os.getenv('BACKEND_PORT', 5000))
