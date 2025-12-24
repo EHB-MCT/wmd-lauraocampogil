@@ -163,3 +163,52 @@ def get_overall_stats():
             'success': False,
             'error': 'Internal server error'
         }), 500
+        @admin_bp.route('/interactions', methods=['GET'])
+def get_all_interactions():
+    try:
+        query = {}
+        
+        if 'user_id' in request.args:
+            query['user_id'] = request.args.get('user_id')
+        
+        if 'event_type' in request.args:
+            query['event_type'] = request.args.get('event_type')
+        limit = min(int(request.args.get('limit', 100)), 500)
+        skip = int(request.args.get('skip', 0))
+        
+        interactions_collection = get_collection('interactions')
+        interactions = list(interactions_collection.find(query)
+            .sort('timestamp', -1)
+            .limit(limit)
+            .skip(skip))
+        
+        total_count = interactions_collection.count_documents(query)
+        
+        interactions_data = [
+            {
+                'user_id': i['user_id'],
+                'event_type': i['event_type'],
+                'timestamp': datetime.fromtimestamp(i['timestamp']).isoformat(),
+                'element': i.get('element'),
+                'page_url': i.get('page_url')
+            }
+            for i in interactions
+        ]
+        
+        return jsonify({
+            'success': True,
+            'interactions': interactions_data,
+            'pagination': {
+                'total': total_count,
+                'limit': limit,
+                'skip': skip,
+                'has_more': (skip + limit) < total_count
+            }
+        }), 200
+        
+    except Exception as e:
+        print(f"Error getting interactions: {e}")
+        return jsonify({
+            'success': False,
+            'error': 'Internal server error'
+        }), 500
