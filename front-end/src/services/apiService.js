@@ -24,6 +24,7 @@ const apiService = {
 			throw error;
 		}
 	},
+
 	async endSession(userId, sessionId) {
 		try {
 			const response = await apiClient.post("/api/tracking/session/end", {
@@ -46,6 +47,7 @@ const apiService = {
 			throw error;
 		}
 	},
+
 	async sendBatchEvents(events) {
 		try {
 			const response = await apiClient.post("/api/tracking/batch", {
@@ -55,6 +57,36 @@ const apiService = {
 		} catch (error) {
 			console.error("Error sending batch events:", error);
 			throw error;
+		}
+	},
+
+	async getUserAnalytics(userId) {
+		try {
+			const response = await apiClient.get(`/api/analytics/user/${userId}`);
+			return response.data;
+		} catch (error) {
+			console.error("Error getting user analytics:", error);
+			return null;
+		}
+	},
+
+	async getTrending() {
+		try {
+			const response = await apiClient.get("/api/analytics/trending");
+			return response.data;
+		} catch (error) {
+			console.error("Error getting trending data:", error);
+			return { trending: [] };
+		}
+	},
+
+	async healthCheck() {
+		try {
+			const response = await apiClient.get("/health");
+			return response.data;
+		} catch (error) {
+			console.error("Health check failed:", error);
+			return null;
 		}
 	},
 };
