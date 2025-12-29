@@ -30,4 +30,21 @@ function Dashboard({ userAnalytics }) {
 			],
 		};
 	};
+	const getTrendingChartData = () => {
+		const labels = trending.slice(0, 5).map((t) => `#${t.hashtag}`);
+		const data = trending.slice(0, 5).map((t) => t.clicks);
+
+		return {
+			labels,
+			datasets: [
+				{
+					label: "Engagement Score",
+					data,
+					backgroundColor: "rgba(75, 192, 192, 0.6)",
+					borderColor: "rgba(75, 192, 192, 1)",
+					borderWidth: 1,
+				},
+			],
+		};
+	};
 }
