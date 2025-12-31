@@ -30,4 +30,13 @@ function SocialMediaAnalytics({ socialData }) {
 			},
 		],
 	};
+	return (
+		<div className="social-media-analytics">
+			<div className="analytics-header">
+				<h2>📱 Social Media Analytics</h2>
+				<p className="subtitle">Real-time analysis of women's football social media engagement</p>
+				<div className="data-source-note">ℹ️ Prototype using mock data - Ready for Twitter/Instagram API integration</div>
+			</div>
+		</div>
+	);
 }
