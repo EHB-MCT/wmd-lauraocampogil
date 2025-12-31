@@ -78,6 +78,27 @@ function SocialMediaAnalytics({ socialData }) {
 					</div>
 				</div>
 			</div>
+			<div className="analytics-section">
+				<h3>🔥 Trending Hashtags</h3>
+				<p className="section-note">Top performing hashtags in women's football</p>
+				<div className="trending-hashtags-list">
+					{socialData.trendingHashtags.slice(0, 5).map((item, index) => (
+						<div key={index} className="hashtag-performance-item">
+							<span className="hashtag-rank">#{index + 1}</span>
+							<span className="hashtag-name">#{item.hashtag}</span>
+							<div className="hashtag-bar">
+								<div
+									className="hashtag-bar-fill"
+									style={{
+										width: `${(item.engagement / socialData.trendingHashtags[0].engagement) * 100}%`,
+									}}
+								></div>
+							</div>
+							<span className="hashtag-score">{item.engagement.toLocaleString()} eng.</span>
+						</div>
+					))}
+				</div>
+			</div>
 		</div>
 	);
 }
