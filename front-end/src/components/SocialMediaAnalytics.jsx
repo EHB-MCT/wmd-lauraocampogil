@@ -182,6 +182,20 @@ function SocialMediaAnalytics({ socialData }) {
 					</div>
 				</div>
 			</div>
+			<div className="analytics-section">
+				<h3>⏰ Optimal Posting Times</h3>
+				<p className="section-note">Best times to post based on engagement data</p>
+				<div className="optimal-times-grid">
+					{socialData.optimalTimes.slice(0, 6).map((timeSlot, index) => (
+						<div key={timeSlot.hour} className="time-slot">
+							<div className="time-slot-rank">#{index + 1}</div>
+							<div className="time-slot-hour">{timeSlot.hour}:00</div>
+							<div className="time-slot-engagement">{timeSlot.avgEngagement.toLocaleString()} avg eng.</div>
+							<div className="time-slot-posts">{timeSlot.postCount} posts</div>
+						</div>
+					))}
+				</div>
+			</div>
 		</div>
 	);
 }
