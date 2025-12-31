@@ -37,6 +37,47 @@ function SocialMediaAnalytics({ socialData }) {
 				<p className="subtitle">Real-time analysis of women's football social media engagement</p>
 				<div className="data-source-note">ℹ️ Prototype using mock data - Ready for Twitter/Instagram API integration</div>
 			</div>
+			<div className="overview-stats">
+				<div className="stat-box">
+					<div className="stat-icon">📊</div>
+					<div className="stat-content">
+						<div className="stat-value">{socialData.totalPosts.toLocaleString()}</div>
+						<div className="stat-label">Posts Analyzed</div>
+					</div>
+				</div>
+
+				<div className="stat-box">
+					<div className="stat-icon">❤️</div>
+					<div className="stat-content">
+						<div className="stat-value">{socialData.totalLikes.toLocaleString()}</div>
+						<div className="stat-label">Total Likes</div>
+					</div>
+				</div>
+
+				<div className="stat-box">
+					<div className="stat-icon">💬</div>
+					<div className="stat-content">
+						<div className="stat-value">{socialData.totalComments.toLocaleString()}</div>
+						<div className="stat-label">Total Comments</div>
+					</div>
+				</div>
+
+				<div className="stat-box">
+					<div className="stat-icon">🔄</div>
+					<div className="stat-content">
+						<div className="stat-value">{socialData.totalShares.toLocaleString()}</div>
+						<div className="stat-label">Total Shares</div>
+					</div>
+				</div>
+
+				<div className="stat-box highlight">
+					<div className="stat-icon">📈</div>
+					<div className="stat-content">
+						<div className="stat-value">{socialData.avgEngagement.toLocaleString()}</div>
+						<div className="stat-label">Avg Engagement</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	);
 }
