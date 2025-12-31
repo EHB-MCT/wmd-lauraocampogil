@@ -131,6 +131,57 @@ function SocialMediaAnalytics({ socialData }) {
 					<div className="no-viral-posts">No viral posts detected in current dataset</div>
 				)}
 			</div>
+			<div className="charts-grid">
+				<div className="chart-card">
+					<h3>😊 Sentiment Analysis</h3>
+					<p className="chart-note">Overall sentiment towards women's football content</p>
+					<div className="chart-wrapper">
+						<Pie
+							data={sentimentData}
+							options={{
+								responsive: true,
+								maintainAspectRatio: false,
+								plugins: {
+									legend: { position: "bottom" },
+								},
+							}}
+						/>
+					</div>
+					<div className="sentiment-summary">
+						<div className="sentiment-item positive">
+							<span className="sentiment-label">Positive:</span>
+							<span className="sentiment-value">{socialData.sentiment.positive}%</span>
+						</div>
+						<div className="sentiment-item neutral">
+							<span className="sentiment-label">Neutral:</span>
+							<span className="sentiment-value">{socialData.sentiment.neutral}%</span>
+						</div>
+						<div className="sentiment-item negative">
+							<span className="sentiment-label">Negative:</span>
+							<span className="sentiment-value">{socialData.sentiment.negative}%</span>
+						</div>
+					</div>
+				</div>
+				<div className="chart-card">
+					<h3>📱 Platform Distribution</h3>
+					<p className="chart-note">Posts across different social platforms</p>
+					<div className="chart-wrapper">
+						<Bar
+							data={platformData}
+							options={{
+								responsive: true,
+								maintainAspectRatio: false,
+								plugins: {
+									legend: { display: false },
+								},
+								scales: {
+									y: { beginAtZero: true },
+								},
+							}}
+						/>
+					</div>
+				</div>
+			</div>
 		</div>
 	);
 }
