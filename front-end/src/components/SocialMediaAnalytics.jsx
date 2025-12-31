@@ -196,6 +196,42 @@ function SocialMediaAnalytics({ socialData }) {
 					))}
 				</div>
 			</div>
+			<div className="insights-section">
+				<h3>💡 Key Insights</h3>
+				<div className="insights-grid">
+					<div className="insight-card">
+						<div className="insight-icon">🎯</div>
+						<h4>Engagement Rate</h4>
+						<p>
+							Average {socialData.avgEngagement} interactions per post.
+							{socialData.viralPosts.length > 0 && ` ${socialData.viralPosts.length} posts went viral!`}
+						</p>
+					</div>
+
+					<div className="insight-card">
+						<div className="insight-icon">😊</div>
+						<h4>Positive Sentiment</h4>
+						<p>{socialData.sentiment.positive}% of conversations about women's football are positive - showing strong community support!</p>
+					</div>
+
+					<div className="insight-card">
+						<div className="insight-icon">📈</div>
+						<h4>Growth Opportunity</h4>
+						<p>
+							Post during peak hours ({socialData.optimalTimes[0]?.hour}:00 -{socialData.optimalTimes[2]?.hour}:00) for maximum reach.
+						</p>
+					</div>
+
+					<div className="insight-card">
+						<div className="insight-icon">#️⃣</div>
+						<h4>Top Hashtag</h4>
+						<p>
+							#{socialData.trendingHashtags[0]?.hashtag} is dominating with
+							{socialData.trendingHashtags[0]?.engagement.toLocaleString()} total engagement!
+						</p>
+					</div>
+				</div>
+			</div>
 		</div>
 	);
 }
