@@ -99,6 +99,38 @@ function SocialMediaAnalytics({ socialData }) {
 					))}
 				</div>
 			</div>
+			<div className="analytics-section">
+				<h3>🚀 Viral Posts (3x Avg Engagement)</h3>
+				<p className="section-note">Posts with exceptional performance</p>
+				{socialData.viralPosts.length > 0 ? (
+					<div className="viral-posts-list">
+						{socialData.viralPosts.slice(0, 3).map((post, index) => (
+							<div key={post.id} className="viral-post-item">
+								<div className="viral-badge">
+									<span className="viral-icon">🔥</span>
+									<span className="viral-rank">#{index + 1}</span>
+								</div>
+								<div className="viral-post-content">
+									<div className="post-text">{post.text}</div>
+									<div className="post-meta">
+										<span className="post-platform">{post.platform}</span>
+										<span className="post-author">{post.author}</span>
+										<span className="post-time">{new Date(post.timestamp).toLocaleDateString()}</span>
+									</div>
+									<div className="post-stats">
+										<span>❤️ {post.likes.toLocaleString()}</span>
+										<span>💬 {post.comments.toLocaleString()}</span>
+										<span>🔄 {post.shares.toLocaleString()}</span>
+										<span className="total-engagement">📊 {post.engagement.toLocaleString()} total</span>
+									</div>
+								</div>
+							</div>
+						))}
+					</div>
+				) : (
+					<div className="no-viral-posts">No viral posts detected in current dataset</div>
+				)}
+			</div>
 		</div>
 	);
 }
