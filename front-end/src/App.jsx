@@ -1,35 +1,95 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect, useState } from "react";
+import tracker from "./utils/tracker";
+import apiService from "./services/apiService";
+import { mockSocialMediaData, generateAnalyticsSummary } from "./utils/mockSocialMediaData";
+import Dashboard from "./components/Dashboard";
+import SocialMediaAnalytics from "./components/SocialMediaAnalytics";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+	const [userAnalytics, setUserAnalytics] = useState(null);
+	const [trending, setTrending] = useState([]);
+	const [socialData, setSocialData] = useState(null);
+	const [loading, setLoading] = useState(true);
+	const [userId, setUserId] = useState(null);
+	const [activeTab, setActiveTab] = useState("user-behavior");
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+	useEffect(() => {
+		initializeApp();
+
+
+		return () => {
+			tracker.stop();
+		};
+	}, []);
+
+	const initializeApp = async () => {
+		try {
+			await tracker.init();
+			const uid = tracker.getUserId();
+			setUserId(uid);
+
+			await loadPersonalizedData(uid);
+
+			const summary = generateAnalyticsSummary(mockSocialMediaData.posts);
+			setSocialData(summary);
+
+			setLoading(false);
+		} catch (error) {
+			console.error("Failed to initialize app:", error);
+			setLoading(false);
+		}
+	};
+
+	const loadPersonalizedData = async (uid) => {
+		try {
+			const analytics = await apiService.getUserAnalytics(uid);
+			if (analytics && analytics.success) {
+				setUserAnalytics(analytics.analytics);
+			}
+
+			const trendingData = await apiService.getTrending();
+			if (trendingData && trendingData.success) {
+				setTrending(trendingData.trending);
+			}
+		} catch (error) {
+			console.error("Failed to load personalized data:", error);
+		}
+	};
+
+	if (loading) {
+		return (
+			<div className="loading-container">
+				<div className="loading-spinner"></div>
+				<p>Loading Women's Football Analytics...</p>
+			</div>
+		);
+	}
+
+	return (
+		<div className="App">
+			<header className="App-header">
+				<h1>⚽ Women's Football Social Media Analytics</h1>
+				<p className="subtitle">Real-time insights for promoting women's football</p>
+
+				<nav className="main-nav">
+					<button className={`nav-btn ${activeTab === "user-behavior" ? "active" : ""}`} onClick={() => setActiveTab("user-behavior")}>
+						📊 Your Dashboard
+					</button>
+					<button className={`nav-btn ${activeTab === "social-media" ? "active" : ""}`} onClick={() => setActiveTab("social-media")}>
+						📱 Social Media Analysis
+					</button>
+				</nav>
+			</header>
+
+			{activeTab === "user-behavior" ? <Dashboard userAnalytics={userAnalytics} trending={trending} userId={userId} onRefresh={() => loadPersonalizedData(userId)} /> : <SocialMediaAnalytics socialData={socialData} />}
+
+			<footer className="App-footer">
+				<p>Women's Football Analytics</p>
+				<p className="disclaimer">Combining user behavior analytics with social media insights</p>
+			</footer>
+		</div>
+	);
 }
 
-export default App
+export default App;
