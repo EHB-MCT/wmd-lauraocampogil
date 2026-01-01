@@ -51,9 +51,9 @@ def get_all_users():
             'error': 'Internal server error'
         }), 500
 
-    @admin_bp.route('/users/<user_id>', methods=['GET'])
-def get_user_details(user_id):
 
+@admin_bp.route('/users/<user_id>', methods=['GET'])
+def get_user_details(user_id):
     try:
         user = user_repo.get_user_by_id(user_id)
         
@@ -63,13 +63,11 @@ def get_user_details(user_id):
                 'error': 'User not found'
             }), 404
         
-
         interactions_collection = get_collection('interactions')
         interactions = list(interactions_collection.find(
             {'user_id': user_id}
         ).sort('timestamp', -1).limit(500))
         
-
         interactions_data = [
             {
                 'event_type': i['event_type'],
@@ -82,7 +80,6 @@ def get_user_details(user_id):
             for i in interactions
         ]
         
-
         sessions_collection = get_collection('sessions')
         sessions = list(sessions_collection.find({'user_id': user_id}))
         
@@ -163,7 +160,9 @@ def get_overall_stats():
             'success': False,
             'error': 'Internal server error'
         }), 500
-        @admin_bp.route('/interactions', methods=['GET'])
+
+
+@admin_bp.route('/interactions', methods=['GET'])
 def get_all_interactions():
     try:
         query = {}
@@ -173,6 +172,7 @@ def get_all_interactions():
         
         if 'event_type' in request.args:
             query['event_type'] = request.args.get('event_type')
+            
         limit = min(int(request.args.get('limit', 100)), 500)
         skip = int(request.args.get('skip', 0))
         
