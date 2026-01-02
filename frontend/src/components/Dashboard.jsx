@@ -256,3 +256,4 @@ function Dashboard({ userAnalytics, trending, userId, onRefresh }) {
 		</div>
 	);
 }
+export default Dashboard;

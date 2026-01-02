@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import tracker from "./utils/tracker";
 import apiService from "./services/apiService";
 import { mockSocialMediaData, generateAnalyticsSummary } from "./utils/mockSocialMediaData";
-import Dashboard from "./components/Dashboard";
-import SocialMediaAnalytics from "./components/SocialMediaAnalytics";
+import { Dashboard } from "./components/Dashboard";
+import { SocialMediaAnalytics } from "./components/SocialMediaAnalytics";
 import "./App.css";
 
 function App() {
@@ -16,7 +16,6 @@ function App() {
 
 	useEffect(() => {
 		initializeApp();
-
 
 		return () => {
 			tracker.stop();

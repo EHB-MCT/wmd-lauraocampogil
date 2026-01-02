@@ -235,3 +235,4 @@ function SocialMediaAnalytics({ socialData }) {
 		</div>
 	);
 }
+export default SocialMediaAnalytics;
