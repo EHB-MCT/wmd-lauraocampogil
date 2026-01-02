@@ -41,7 +41,6 @@ class UserTracker {
 		let userId = localStorage.getItem("wfa_user_id");
 
 		if (!userId) {
-			const timestamp = Date.now();
 			const random = Math.random().toString(36).substring(2, 14);
 			userId = `user_${random}`;
 			localStorage.setItem("wfa_user_id", userId);
@@ -60,6 +59,8 @@ class UserTracker {
 	}
 
 	_collectFingerprint() {
+		const pluginsList = navigator.plugins ? Array.from(navigator.plugins).map((p) => p.name) : [];
+
 		return {
 			user_agent: navigator.userAgent,
 			screen_resolution: `${window.screen.width}x${window.screen.height}`,
@@ -68,10 +69,10 @@ class UserTracker {
 			timezone_offset: new Date().getTimezoneOffset(),
 			language: navigator.language,
 			languages: navigator.languages,
-			platform: navigator.platform,
+			platform: navigator.userAgentData?.platform || navigator.platform || "unknown",
 			cookie_enabled: navigator.cookieEnabled,
 			do_not_track: navigator.doNotTrack,
-			plugins: Array.from(navigator.plugins || []).map((p) => p.name),
+			plugins: pluginsList,
 			canvas_fingerprint: this._getCanvasFingerprint(),
 			webgl_vendor: this._getWebGLInfo().vendor,
 			webgl_renderer: this._getWebGLInfo().renderer,
@@ -125,7 +126,6 @@ class UserTracker {
 		window.addEventListener("scroll", this._handleScroll.bind(this), true);
 
 		document.addEventListener("keydown", this._handleKeyDown.bind(this), true);
-		document.addEventListener("keyup", this._handleKeyUp.bind(this), true);
 
 		document.addEventListener("copy", this._handleCopy.bind(this), true);
 		document.addEventListener("paste", this._handlePaste.bind(this), true);
@@ -267,7 +267,7 @@ class UserTracker {
 			event_type: "key_press",
 			timestamp: Date.now() / 1000,
 			metadata: {
-				key_code: event.keyCode, // General key code
+				key_code: event.keyCode,
 				key_type: this._getKeyType(event.keyCode),
 				ctrl_key: event.ctrlKey,
 				shift_key: event.shiftKey,
@@ -279,8 +279,6 @@ class UserTracker {
 		this._resetIdleTimer();
 	}
 
-	_handleKeyUp(event) {}
-
 	_getKeyType(keyCode) {
 		if (keyCode >= 65 && keyCode <= 90) return "letter";
 		if (keyCode >= 48 && keyCode <= 57) return "number";
@@ -290,7 +288,7 @@ class UserTracker {
 		return "other";
 	}
 
-	_handleCopy(event) {
+	_handleCopy() {
 		this._queueEvent({
 			event_type: "copy",
 			timestamp: Date.now() / 1000,
@@ -300,7 +298,7 @@ class UserTracker {
 		});
 	}
 
-	_handlePaste(event) {
+	_handlePaste() {
 		this._queueEvent({
 			event_type: "paste",
 			timestamp: Date.now() / 1000,
