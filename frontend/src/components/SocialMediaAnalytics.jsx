@@ -1,7 +1,7 @@
 import React from "react";
 import { Bar, Pie } from "react-chartjs-2";
 
-function SocialMediaAnalytics({ socialData }) {
+export function SocialMediaAnalytics({ socialData }) {
 	if (!socialData) {
 		return <div className="loading">Loading social media data...</div>;
 	}
@@ -235,4 +235,3 @@ function SocialMediaAnalytics({ socialData }) {
 		</div>
 	);
 }
-export default SocialMediaAnalytics;

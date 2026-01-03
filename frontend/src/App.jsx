@@ -14,13 +14,21 @@ function App() {
 	const [userId, setUserId] = useState(null);
 	const [activeTab, setActiveTab] = useState("user-behavior");
 
-	useEffect(() => {
-		initializeApp();
+	const loadPersonalizedData = async (uid) => {
+		try {
+			const analytics = await apiService.getUserAnalytics(uid);
+			if (analytics && analytics.success) {
+				setUserAnalytics(analytics.analytics);
+			}
 
-		return () => {
-			tracker.stop();
-		};
-	}, []);
+			const trendingData = await apiService.getTrending();
+			if (trendingData && trendingData.success) {
+				setTrending(trendingData.trending);
+			}
+		} catch (error) {
+			console.error("Failed to load personalized data:", error);
+		}
+	};
 
 	const initializeApp = async () => {
 		try {
@@ -40,21 +48,14 @@ function App() {
 		}
 	};
 
-	const loadPersonalizedData = async (uid) => {
-		try {
-			const analytics = await apiService.getUserAnalytics(uid);
-			if (analytics && analytics.success) {
-				setUserAnalytics(analytics.analytics);
-			}
+	useEffect(() => {
+		initializeApp();
 
-			const trendingData = await apiService.getTrending();
-			if (trendingData && trendingData.success) {
-				setTrending(trendingData.trending);
-			}
-		} catch (error) {
-			console.error("Failed to load personalized data:", error);
-		}
-	};
+		return () => {
+			tracker.stop();
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []); // Run once on mount
 
 	if (loading) {
 		return (

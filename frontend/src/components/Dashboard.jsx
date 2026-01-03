@@ -4,7 +4,7 @@ import { Pie, Bar } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title);
 
-function Dashboard({ userAnalytics, trending, userId, onRefresh }) {
+export function Dashboard({ userAnalytics, trending, userId, onRefresh }) {
 	const getEngagementChartData = () => {
 		if (!userAnalytics) {
 			return {
@@ -256,4 +256,3 @@ function Dashboard({ userAnalytics, trending, userId, onRefresh }) {
 		</div>
 	);
 }
-export default Dashboard;
