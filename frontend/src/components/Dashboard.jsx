@@ -1,6 +1,7 @@
 import React from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title } from "chart.js";
 import { Pie, Bar } from "react-chartjs-2";
+import "./Dashboard.css";
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title);
 
@@ -30,6 +31,7 @@ export function Dashboard({ userAnalytics, trending, userId, onRefresh }) {
 			],
 		};
 	};
+
 	const getTrendingChartData = () => {
 		const labels = trending.slice(0, 5).map((t) => `#${t.hashtag}`);
 		const data = trending.slice(0, 5).map((t) => t.clicks);
@@ -47,11 +49,14 @@ export function Dashboard({ userAnalytics, trending, userId, onRefresh }) {
 			],
 		};
 	};
+
 	return (
 		<div className="dashboard-container">
 			{/* Personalized Welcome */}
 			<div className="welcome-section">
-				<h2>Welcome back! 👋</h2>
+				<h2>
+					Welcome back! <i className="fa-solid fa-hand"></i>
+				</h2>
 				<p>Your personalized women's football analytics dashboard</p>
 				{userAnalytics && (
 					<div className="user-stats">
@@ -71,7 +76,9 @@ export function Dashboard({ userAnalytics, trending, userId, onRefresh }) {
 			<div className="content-grid">
 				{/* Trending Hashtags - INFLUENCED BY USER BEHAVIOR */}
 				<div className="card trending-card">
-					<h3>🔥 Trending Hashtags</h3>
+					<h3>
+						<i className="fa-solid fa-fire"></i> Trending Hashtags
+					</h3>
 					<p className="card-subtitle">Based on community engagement</p>
 
 					{trending.length > 0 ? (
@@ -107,7 +114,9 @@ export function Dashboard({ userAnalytics, trending, userId, onRefresh }) {
 
 				{/* Personalized Recommendations - INFLUENCED BY TRACKING */}
 				<div className="card recommendations-card">
-					<h3>💡 Personalized Recommendations</h3>
+					<h3>
+						<i className="fa-solid fa-lightbulb"></i> Personalized Recommendations
+					</h3>
 					<p className="card-subtitle">Based on your interests</p>
 
 					{userAnalytics && userAnalytics.top_interests && userAnalytics.top_interests.length > 0 ? (
@@ -125,7 +134,9 @@ export function Dashboard({ userAnalytics, trending, userId, onRefresh }) {
 							</div>
 
 							<div className="optimal-time-section">
-								<h4>⏰ Optimal Posting Time:</h4>
+								<h4>
+									<i className="fa-solid fa-clock"></i> Optimal Posting Time:
+								</h4>
 								<div className="time-recommendation">
 									<span className="time-value">{userAnalytics.recommendations?.optimal_post_time || "09:00"}</span>
 									<span className="time-label">Based on your activity patterns</span>
@@ -148,7 +159,9 @@ export function Dashboard({ userAnalytics, trending, userId, onRefresh }) {
 						</>
 					) : (
 						<div className="no-data-info">
-							<p>🔍 Keep exploring to get personalized recommendations!</p>
+							<p>
+								<i className="fa-solid fa-magnifying-glass"></i> Keep exploring to get personalized recommendations!
+							</p>
 							<p className="hint">Click on hashtags and explore the dashboard to unlock insights</p>
 						</div>
 					)}
@@ -156,7 +169,9 @@ export function Dashboard({ userAnalytics, trending, userId, onRefresh }) {
 
 				{/* Your Activity Chart */}
 				<div className="card activity-card">
-					<h3>📊 Your Activity Overview</h3>
+					<h3>
+						<i className="fa-solid fa-chart-pie"></i> Your Activity Overview
+					</h3>
 					<p className="card-subtitle">Your engagement patterns</p>
 
 					<div className="chart-container">
@@ -181,7 +196,9 @@ export function Dashboard({ userAnalytics, trending, userId, onRefresh }) {
 
 				{/* Suggested Hashtags - INFLUENCED BY USER CLICKS */}
 				<div className="card suggestions-card">
-					<h3>✨ Suggested Hashtags for You</h3>
+					<h3>
+						<i className="fa-solid fa-star"></i> Suggested Hashtags for You
+					</h3>
 					<p className="card-subtitle">Curated based on your activity</p>
 
 					{userAnalytics?.recommendations?.suggested_hashtags ? (
@@ -212,27 +229,33 @@ export function Dashboard({ userAnalytics, trending, userId, onRefresh }) {
 						</div>
 					)}
 
-					<p className="suggestion-note">💡 These hashtags are performing well and match your interests</p>
+					<p className="suggestion-note">
+						<i className="fa-solid fa-lightbulb"></i> These hashtags are performing well and match your interests
+					</p>
 				</div>
 
 				{/* Quick Actions */}
 				<div className="card actions-card">
-					<h3>⚡ Quick Actions</h3>
+					<h3>
+						<i className="fa-solid fa-bolt"></i> Quick Actions
+					</h3>
 
 					<div className="action-buttons">
 						<button className="action-btn primary" id="btn-analyze" onClick={onRefresh}>
-							🔄 Refresh Data
+							<i className="fa-solid fa-rotate"></i> Refresh Data
 						</button>
 						<button className="action-btn secondary" id="btn-export">
-							📥 Export Report
+							<i className="fa-solid fa-download"></i> Export Report
 						</button>
 						<button className="action-btn secondary" id="btn-share">
-							📤 Share Insights
+							<i className="fa-solid fa-share-nodes"></i> Share Insights
 						</button>
 					</div>
 
 					<div className="tips-section">
-						<h4>💡 Pro Tips:</h4>
+						<h4>
+							<i className="fa-solid fa-lightbulb"></i> Pro Tips:
+						</h4>
 						<ul>
 							<li>Post during your optimal times for maximum reach</li>
 							<li>Use trending hashtags to boost visibility</li>
@@ -244,7 +267,9 @@ export function Dashboard({ userAnalytics, trending, userId, onRefresh }) {
 
 				{/* Additional Info */}
 				<div className="card info-card">
-					<h3>ℹ️ About This Dashboard</h3>
+					<h3>
+						<i className="fa-solid fa-circle-info"></i> About This Dashboard
+					</h3>
 					<p>This analytics platform helps you understand and optimize your women's football social media presence. All recommendations are personalized based on engagement data and trending patterns.</p>
 					<p className="user-id-display">
 						<small>
