@@ -13,6 +13,7 @@ export function SocialMediaAnalytics({ socialData }) {
 		);
 	}
 
+	// Sentiment pie chart data
 	const sentimentData = {
 		labels: ["Positive", "Neutral", "Negative"],
 		datasets: [
