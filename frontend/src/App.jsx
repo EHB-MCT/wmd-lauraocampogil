@@ -69,15 +69,15 @@ function App() {
 	return (
 		<div className="App">
 			<header className="App-header">
-				<h1>⚽ Women's Football Social Media Analytics</h1>
+				<h1>Women's Football Social Media Analytics</h1>
 				<p className="subtitle">Real-time insights for promoting women's football</p>
 
 				<nav className="main-nav">
 					<button className={`nav-btn ${activeTab === "user-behavior" ? "active" : ""}`} onClick={() => setActiveTab("user-behavior")}>
-						📊 Your Dashboard
+						Your Dashboard
 					</button>
 					<button className={`nav-btn ${activeTab === "social-media" ? "active" : ""}`} onClick={() => setActiveTab("social-media")}>
-						📱 Social Media Analysis
+						Social Media Analysis
 					</button>
 				</nav>
 			</header>
