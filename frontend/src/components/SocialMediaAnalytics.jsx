@@ -47,9 +47,6 @@ export function SocialMediaAnalytics({ socialData }) {
 					<i className="fa-solid fa-mobile-screen-button"></i> Social Media Analytics
 				</h2>
 				<p className="subtitle">Real-time analysis of women's football social media engagement</p>
-				<div className="data-source-note">
-					<i className="fa-solid fa-circle-info"></i> Prototype using mock data - Ready for Twitter/Instagram API integration
-				</div>
 			</div>
 
 			{/* Overview Stats */}
