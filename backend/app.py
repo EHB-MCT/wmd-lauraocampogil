@@ -4,6 +4,9 @@ from pymongo import MongoClient
 from datetime import datetime
 import os
 
+# Import Reddit service
+from reddit_service import reddit_service
+
 app = Flask(__name__)
 
 # Enable CORS for all routes
@@ -25,6 +28,7 @@ db = client['womens_football_analytics']
 sessions_collection = db['sessions']
 events_collection = db['events']
 users_collection = db['users']
+social_cache_collection = db['social_cache']
 
 # Create indexes
 def create_indexes():
@@ -34,6 +38,7 @@ def create_indexes():
         events_collection.create_index([("user_id", 1)])
         events_collection.create_index([("session_id", 1)])
         events_collection.create_index([("timestamp", 1)])
+        social_cache_collection.create_index([("cached_at", 1)], expireAfterSeconds=300)  # 5 min cache
         print("✓ Database indexes created successfully")
     except Exception as e:
         print(f"Error creating indexes: {e}")
@@ -72,7 +77,7 @@ def start_session():
     
     return jsonify({
         'success': True,
-        'session_id': session_data['session_id']  # FIXED: was session_ta
+        'session_id': session_data['session_id']
     }), 201
 
 @app.route('/api/tracking/session/end', methods=['POST', 'OPTIONS'])
@@ -163,6 +168,143 @@ def get_trending():
         'trending': trending
     }), 200
 
+
+# ============================================
+# NEW: Reddit Social Media Analytics Endpoints
+# ============================================
+
+@app.route('/api/social/reddit', methods=['GET', 'OPTIONS'])
+def get_reddit_data():
+    """Fetch real social media data from Reddit"""
+    if request.method == 'OPTIONS':
+        return '', 204
+    
+    try:
+        # Check cache first
+        cached = social_cache_collection.find_one({'type': 'reddit_data'})
+        
+        if cached:
+            print("✓ Returning cached Reddit data")
+            cached_data = cached.get('data', {})
+            cached_data['fromCache'] = True
+            return jsonify({
+                'success': True,
+                'data': cached_data
+            }), 200
+        
+        # Fetch fresh data from Reddit
+        print("⏳ Fetching fresh data from Reddit...")
+        data = reddit_service.get_social_media_data()
+        
+        # Cache the result
+        social_cache_collection.update_one(
+            {'type': 'reddit_data'},
+            {
+                '$set': {
+                    'type': 'reddit_data',
+                    'data': data,
+                    'cached_at': datetime.utcnow()
+                }
+            },
+            upsert=True
+        )
+        
+        print(f"✓ Fetched {data.get('totalPosts', 0)} posts from Reddit")
+        data['fromCache'] = False
+        
+        return jsonify({
+            'success': True,
+            'data': data
+        }), 200
+        
+    except Exception as e:
+        print(f"❌ Error fetching Reddit data: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e),
+            'data': reddit_service._empty_response()
+        }), 500
+
+@app.route('/api/social/reddit/refresh', methods=['POST', 'OPTIONS'])
+def refresh_reddit_data():
+    """Force refresh Reddit data (bypass cache)"""
+    if request.method == 'OPTIONS':
+        return '', 204
+    
+    try:
+        # Delete cache
+        social_cache_collection.delete_one({'type': 'reddit_data'})
+        
+        # Fetch fresh data
+        print("🔄 Force refreshing Reddit data...")
+        data = reddit_service.get_social_media_data()
+        
+        # Cache the result
+        social_cache_collection.update_one(
+            {'type': 'reddit_data'},
+            {
+                '$set': {
+                    'type': 'reddit_data',
+                    'data': data,
+                    'cached_at': datetime.utcnow()
+                }
+            },
+            upsert=True
+        )
+        
+        print(f"✓ Refreshed with {data.get('totalPosts', 0)} posts")
+        data['fromCache'] = False
+        
+        return jsonify({
+            'success': True,
+            'data': data,
+            'message': 'Data refreshed successfully'
+        }), 200
+        
+    except Exception as e:
+        print(f"❌ Error refreshing Reddit data: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+@app.route('/api/social/reddit/search', methods=['GET', 'OPTIONS'])
+def search_reddit():
+    """Search Reddit for specific terms"""
+    if request.method == 'OPTIONS':
+        return '', 204
+    
+    query = request.args.get('q', 'women football')
+    
+    try:
+        results = reddit_service.search_reddit(query, limit=30)
+        
+        processed = []
+        for post in results:
+            post_data = post.get('data', {})
+            processed.append({
+                'id': post_data.get('id'),
+                'title': post_data.get('title'),
+                'subreddit': post_data.get('subreddit'),
+                'score': post_data.get('score', 0),
+                'comments': post_data.get('num_comments', 0),
+                'url': f"https://reddit.com{post_data.get('permalink', '')}"
+            })
+        
+        return jsonify({
+            'success': True,
+            'query': query,
+            'results': processed,
+            'count': len(processed)
+        }), 200
+        
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
 def _get_top_events(user_id, limit=5):
     pipeline = [
         {'$match': {'user_id': user_id}},
@@ -176,6 +318,7 @@ def _get_top_events(user_id, limit=5):
     
     results = list(events_collection.aggregate(pipeline))
     return [{'event_type': r['_id'], 'count': r['count']} for r in results]
+
 
 if __name__ == '__main__':
     try:
