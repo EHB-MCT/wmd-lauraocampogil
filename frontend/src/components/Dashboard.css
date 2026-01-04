@@ -1,0 +1,475 @@
+.dashboard-container {
+	max-width: 1400px;
+	margin: 0 auto;
+	padding: 2rem;
+}
+
+/* Welcome Section */
+.welcome-section {
+	background: white;
+	padding: 2rem;
+	border-radius: 12px;
+	margin-bottom: 2rem;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	text-align: center;
+}
+
+.welcome-section h2 {
+	color: #1a1a1a;
+	font-size: 2rem;
+	margin-bottom: 0.5rem;
+}
+
+.welcome-section h2 i {
+	margin-left: 0.5rem;
+	color: #333;
+}
+
+.welcome-section p {
+	color: #666;
+	font-size: 1.1rem;
+}
+
+/* User Stats Grid */
+.user-stats {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+.stat-card {
+	background: linear-gradient(135deg, #1a1a1a 0%, #444444 100%);
+	padding: 1.5rem;
+	border-radius: 12px;
+	color: white;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.stat-value {
+	font-size: 2.5rem;
+	font-weight: bold;
+	margin-bottom: 0.5rem;
+}
+
+.stat-label {
+	font-size: 0.95rem;
+	opacity: 0.9;
+}
+
+/* Content Grid */
+.content-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+	gap: 1.5rem;
+}
+
+/* Card Styles */
+.card {
+	background: white;
+	padding: 2rem;
+	border-radius: 12px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card h3 {
+	color: #1a1a1a;
+	margin-bottom: 0.5rem;
+	font-size: 1.4rem;
+}
+
+.card h3 i {
+	margin-right: 0.5rem;
+	color: #333;
+}
+
+.card-subtitle {
+	color: #999;
+	font-size: 0.95rem;
+	margin-bottom: 1.5rem;
+}
+
+/* Trending List */
+.trending-list {
+	margin: 1.5rem 0;
+}
+
+.trending-item {
+	display: flex;
+	align-items: center;
+	padding: 1rem;
+	margin-bottom: 0.75rem;
+	background: #f8f9fa;
+	border-radius: 10px;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.trending-item:hover {
+	background: #e9ecef;
+	transform: translateX(5px);
+}
+
+.rank {
+	font-weight: bold;
+	color: #1a1a1a;
+	margin-right: 1rem;
+	min-width: 35px;
+	font-size: 1.1rem;
+}
+
+.hashtag {
+	flex: 1;
+	font-weight: 600;
+	color: #333;
+	font-size: 1rem;
+}
+
+.score {
+	color: #1a1a1a;
+	font-weight: 600;
+	font-size: 0.95rem;
+}
+
+/* Chart Container */
+.chart-container {
+	height: 300px;
+	margin-top: 1.5rem;
+}
+
+/* No Data States */
+.no-data {
+	text-align: center;
+	color: #999;
+	padding: 2rem;
+	font-size: 1rem;
+}
+
+.no-data-info {
+	text-align: center;
+	padding: 2rem;
+	background: #f8f9fa;
+	border-radius: 10px;
+	margin-top: 1rem;
+}
+
+.no-data-info p {
+	color: #666;
+	margin-bottom: 0.75rem;
+	font-size: 1rem;
+}
+
+.no-data-info p i {
+	margin-right: 0.5rem;
+	color: #333;
+}
+
+.hint {
+	font-size: 0.9rem;
+	color: #999;
+}
+
+/* Interests Section */
+.interests-section,
+.optimal-time-section,
+.activity-hours {
+	margin: 1.5rem 0;
+}
+
+.interests-section h4,
+.optimal-time-section h4,
+.activity-hours h4 {
+	color: #1a1a1a;
+	margin-bottom: 1rem;
+	font-size: 1.1rem;
+}
+
+.optimal-time-section h4 i {
+	margin-right: 0.5rem;
+	color: #333;
+}
+
+.interests-list {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+.interest-item {
+	display: flex;
+	justify-content: space-between;
+	padding: 0.75rem 1rem;
+	background: #f8f9fa;
+	border-radius: 8px;
+	transition: background 0.2s;
+}
+
+.interest-item:hover {
+	background: #e9ecef;
+}
+
+.interest-name {
+	color: #333;
+	font-weight: 500;
+}
+
+.interest-count {
+	color: #1a1a1a;
+	font-weight: 600;
+}
+
+/* Time Recommendation */
+.time-recommendation {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 1.5rem;
+	background: linear-gradient(135deg, #1a1a1a 0%, #444444 100%);
+	border-radius: 12px;
+	color: white;
+}
+
+.time-value {
+	font-size: 2.5rem;
+	font-weight: bold;
+}
+
+.time-label {
+	font-size: 0.95rem;
+	opacity: 0.9;
+	margin-top: 0.5rem;
+}
+
+/* Hours List */
+.hours-list {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+.hour-item {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.hour-bar {
+	height: 24px;
+	background: linear-gradient(90deg, #1a1a1a 0%, #555555 100%);
+	border-radius: 6px;
+	transition: width 0.3s;
+}
+
+/* Activity Summary */
+.activity-summary {
+	margin-top: 1.5rem;
+	padding: 1.25rem;
+	background: #f8f9fa;
+	border-radius: 10px;
+	text-align: center;
+}
+
+.activity-summary p {
+	color: #666;
+	line-height: 1.7;
+	font-size: 0.95rem;
+}
+
+/* Hashtag Suggestions */
+.hashtag-suggestions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+	margin: 1.5rem 0;
+}
+
+.hashtag-button {
+	padding: 0.6rem 1.25rem;
+	background: linear-gradient(135deg, #1a1a1a 0%, #444444 100%);
+	color: white;
+	border: none;
+	border-radius: 25px;
+	cursor: pointer;
+	font-weight: 600;
+	font-size: 0.95rem;
+	transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.hashtag-button:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.suggestion-note {
+	color: #999;
+	font-size: 0.9rem;
+	margin-top: 1rem;
+}
+
+.suggestion-note i {
+	margin-right: 0.5rem;
+	color: #333;
+}
+
+/* Action Buttons */
+.action-buttons {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	margin-bottom: 1.5rem;
+}
+
+.action-btn {
+	padding: 0.9rem 1.5rem;
+	border: none;
+	border-radius: 10px;
+	font-weight: 600;
+	font-size: 1rem;
+	cursor: pointer;
+	transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.action-btn i {
+	margin-right: 0.5rem;
+}
+
+.action-btn.primary {
+	background: linear-gradient(135deg, #1a1a1a 0%, #444444 100%);
+	color: white;
+}
+
+.action-btn.secondary {
+	background: white;
+	color: #1a1a1a;
+	border: 2px solid #1a1a1a;
+}
+
+.action-btn:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Tips Section */
+.tips-section {
+	background: #f8f9fa;
+	padding: 1.25rem;
+	border-radius: 10px;
+}
+
+.tips-section h4 {
+	color: #1a1a1a;
+	margin-bottom: 1rem;
+	font-size: 1.1rem;
+}
+
+.tips-section h4 i {
+	margin-right: 0.5rem;
+	color: #333;
+}
+
+.tips-section ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.tips-section li {
+	padding: 0.6rem 0;
+	color: #666;
+	position: relative;
+	padding-left: 1.75rem;
+	line-height: 1.5;
+}
+
+.tips-section li:before {
+	content: "\f00c";
+	font-family: "Font Awesome 6 Free";
+	font-weight: 900;
+	position: absolute;
+	left: 0;
+	color: #1a1a1a;
+}
+
+/* Info Card */
+.info-card h3 i {
+	margin-right: 0.5rem;
+	color: #333;
+}
+
+.info-card p {
+	color: #666;
+	line-height: 1.7;
+	margin-bottom: 1rem;
+	font-size: 0.95rem;
+}
+
+.user-id-display {
+	background: #f8f9fa;
+	padding: 1rem;
+	border-radius: 8px;
+	text-align: center;
+}
+
+.user-id-display code {
+	color: #1a1a1a;
+	font-weight: 600;
+	font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+	.content-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 768px) {
+	.dashboard-container {
+		padding: 1rem;
+	}
+
+	.welcome-section {
+		padding: 1.5rem;
+	}
+
+	.welcome-section h2 {
+		font-size: 1.5rem;
+	}
+
+	.card {
+		padding: 1.5rem;
+	}
+
+	.user-stats {
+		grid-template-columns: 1fr;
+	}
+
+	.stat-value {
+		font-size: 2rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.hashtag-suggestions {
+		justify-content: center;
+	}
+
+	.action-buttons {
+		gap: 0.5rem;
+	}
+}
