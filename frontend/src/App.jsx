@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title } from "chart.js";
 import { Dashboard } from "./components/Dashboard";
 import { SocialMediaAnalytics } from "./components/SocialMediaAnalytics";
@@ -29,15 +29,10 @@ function App() {
 	const [dataSource, setDataSource] = useState("");
 	const [usingMockData, setUsingMockData] = useState(false);
 
-	// Fetch data on mount
-	useEffect(() => {
-		initializeApp();
-	}, []);
-
 	/**
 	 * Load mock data as fallback
 	 */
-	const loadMockData = () => {
+	const loadMockData = useCallback(() => {
 		console.log("📦 Loading mock data as fallback...");
 		const mockPosts = generateMockPosts(100);
 		const mockAnalytics = generateAnalyticsSummary(mockPosts);
@@ -49,7 +44,7 @@ function App() {
 		// Extract trending for dashboard
 		if (mockAnalytics.trendingHashtags) {
 			setTrending(
-				mockAnalytics.trendingHashtags.map((h, i) => ({
+				mockAnalytics.trendingHashtags.map((h) => ({
 					hashtag: h.hashtag,
 					trending_score: h.engagement,
 					clicks: Math.floor(h.engagement / 10),
@@ -73,12 +68,12 @@ function App() {
 		});
 
 		console.log("✓ Mock data loaded successfully");
-	};
+	}, []);
 
 	/**
 	 * Load real data from Reddit API
 	 */
-	const loadRedditData = async () => {
+	const loadRedditData = useCallback(async () => {
 		try {
 			const redditData = await getRedditSocialData();
 			setSocialData(redditData);
@@ -88,7 +83,7 @@ function App() {
 			// Extract trending for dashboard
 			if (redditData.trendingHashtags) {
 				setTrending(
-					redditData.trendingHashtags.map((h, i) => ({
+					redditData.trendingHashtags.map((h) => ({
 						hashtag: h.hashtag,
 						trending_score: h.engagement,
 						clicks: h.posts * 10,
@@ -116,9 +111,9 @@ function App() {
 			console.error("Reddit API failed:", err);
 			return false;
 		}
-	};
+	}, []);
 
-	const initializeApp = async () => {
+	const initializeApp = useCallback(async () => {
 		setLoading(true);
 		setError(null);
 
@@ -130,7 +125,7 @@ function App() {
 					session_id: "session_" + Date.now(),
 					fingerprint: navigator.userAgent,
 				});
-			} catch (e) {
+			} catch {
 				console.log("Session start failed, continuing anyway");
 			}
 
@@ -141,14 +136,19 @@ function App() {
 				console.log("⚠️ Reddit API unavailable, using mock data");
 				loadMockData();
 			}
-		} catch (err) {
-			console.error("Failed to initialize app:", err);
+		} catch {
+			console.error("Failed to initialize app");
 			// Final fallback - always load mock data
 			loadMockData();
 		} finally {
 			setLoading(false);
 		}
-	};
+	}, [userId, loadRedditData, loadMockData]);
+
+	// Fetch data on mount
+	useEffect(() => {
+		initializeApp();
+	}, [initializeApp]);
 
 	const handleRefresh = async () => {
 		setLoading(true);
@@ -163,15 +163,15 @@ function App() {
 
 			if (freshData.trendingHashtags) {
 				setTrending(
-					freshData.trendingHashtags.map((h, i) => ({
+					freshData.trendingHashtags.map((h) => ({
 						hashtag: h.hashtag,
 						trending_score: h.engagement,
 						clicks: h.posts * 10,
 					}))
 				);
 			}
-		} catch (err) {
-			console.error("Failed to refresh from Reddit:", err);
+		} catch {
+			console.error("Failed to refresh from Reddit");
 			// Fallback to new mock data
 			loadMockData();
 			setError("Reddit unavailable - showing demo data");
